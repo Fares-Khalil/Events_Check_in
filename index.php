@@ -20,7 +20,7 @@
 
 
 
-        if ($password != "12345" ) 
+        if ($password != "12345" ) //Update with your password
         {
         $passwordErr = "Invalid Password";
         }
@@ -53,19 +53,20 @@
     }
     else
     {
-        $compcon =  mysqli_connect("sql309.infinityfree.com","if0_36062971","DDAY2024","if0_36062971_dday");
+        $compcon =  mysqli_connect("sql309.infinityfree.com","if0_36062971","DDAY2024","if0_36062971_dday"); //The format is mysqli_connect("hostname","username","password","database");
         if (!$compcon) {
             echo mysqli_connect_error();
         }
         $first_name = $_GET['first'];
         $last_name = $_GET['last'];
-        $sql = "select checked_in from attendees where first = '$first_name' and last = '$last_name'";
+        $sql = "select checked_in from attendees where first = '$first_name' and last = '$last_name'"; //The table has 3 coloumns: first, last and checked_in
         $result = mysqli_query($compcon, $sql);
         $paying = mysqli_fetch_array($result);
         echo "First Name: ".$first_name;
         echo "<br>";
         echo "Last Name: ".$last_name;
-        if ($paying['checked_in'] == 0 && $paying['checked_in']!= null)
+        if ($paying['checked_in'] == 0 && $paying['checked_in']!= null) //Update based on the convention you use for the table
+        {
         {
 ?>
     <div class = "result">
