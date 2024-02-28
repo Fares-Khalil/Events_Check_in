@@ -6,22 +6,11 @@
 </style>
 </head>
 <body> 
-
 <?php
     session_start();
-    if ($_SESSION["Login"]!= true)
-    {
-?>
-        <h2>Please Log in</h2>
-        <form method="post" action="login.php">  
-        Password: <input type="password" name="password" value="<?php echo $password;?>">
-        <span class="error"><?php echo $passwordErr;?></span>
-        <br><br>
-        
-        <input type="submit">  
-        </form>
 
-        <?php
+    if(isset($_POST['login']))
+        {
         // define variables and set to empty values
         $password="";
         $passwordErr="";
@@ -44,34 +33,49 @@
         {
         $_SESSION["Login"] = false;
         }
+        }
+?>
+<?php
+    if (!$_SESSION["Login"])
+    {
+?>
+        <h2>Please Log in</h2>
+        <form method="post" action="">  
+        Password: <input type="password" name="password" value="<?php echo $password;?>">
+        <span class="error"><?php echo $passwordErr;?></span>
+        <br><br>
+        
+        <input type="submit" name="login" value="login">  
+        </form>
 
+        <?php
+        
     }
     else
     {
-        $compcon =  mysqli_connect("sql305.epizy.com","epiz_31595463","4qtQ0FvxKAyhR","epiz_31595463_dday");
+        $compcon =  mysqli_connect("sql309.infinityfree.com","if0_36062971","DDAY2024","if0_36062971_dday");
         if (!$compcon) {
             echo mysqli_connect_error();
         }
         $first_name = $_GET['first'];
         $last_name = $_GET['last'];
-        $sql = "select paid from attendees where first = '$first_name' and last = '$last_name'";
+        $sql = "select checked_in from attendees where first = '$first_name' and last = '$last_name'";
         $result = mysqli_query($compcon, $sql);
         $paying = mysqli_fetch_array($result);
-
         echo "First Name: ".$first_name;
         echo "<br>";
         echo "Last Name: ".$last_name;
-        if ($paying['paid'] && $paying['paid']!= null)
+        if ($paying['checked_in'] == 0 && $paying['checked_in']!= null)
         {
 ?>
     <div class = "result">
             <p>  You have paid, you can definetly take a mug! Enjoy the day, and be smart!! </p>
     </div>
 <?php
-        $update = "update attendees set paid = 0 where first = '$first_name' and last = '$last_name'";
+        $update = "update attendees set checked_in = 1 where first = '$first_name' and last = '$last_name'";
         mysqli_query($compcon, $update);
     }
-    elseif (!$paying['paid'] && $paying['paid']!= null)
+    elseif ($paying['checked_in'] && $paying['checked_in']!= null)
     {
 ?>
     <div class = "result">
